@@ -1,0 +1,2789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Controle de Progresso - Edital Polícia Penal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0D0D09 0%, #000000 100%);
+      color: #F4E883;
+      min-height: 100vh;
+      padding: 0px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      background: rgba(20, 20, 20, 0.95);
+      border-radius: 10px;
+      padding: 0px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid #333;
+    }
+    header {
+      text-align: center;
+      padding: 08px 0;
+      color: #F7EF8A;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      background: linear-gradient(to right, #D2AC47, #F7EF8A, #AE8625);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    header p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    .app-container {
+      margin-top: 10px;
+    }
+    .progress-app {
+      background: linear-gradient(to bottom, #1a1a1a, #111);
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      min-height: 420px;
+      border: 1px solid #333;
+    }
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding-bottom: 0px;
+      border-bottom: 1px solid #333;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .app-header h2 {
+      color: #F7EF8A;
+      font-size: 1.5rem;
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(210, 172, 71, 0.25);
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-weight: 500;
+      color: #F7EF8A;
+      font-size: 0.85rem;
+    }
+ /* --- BARRA SUPERIOR COMPACTA E ALINHADA --- */
+.top-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-bottom: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.top-bar > * {
+  flex: 0 0 auto;
+}
+.top-bar button {
+  background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+  color: #0D0D09;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  font-size: 0.82rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  min-height: 34px;
+  max-width: 130px;
+  margin: 0;
+}
+.top-bar button:hover {
+  background: linear-gradient(135deg, #F4E883, #D2AC47, #AE8625);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.top-bar button.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+/* Botão "Dados" compacto */
+.top-bar button:nth-child(5) {
+  width: 76px !important;
+  max-width: 76px !important;
+  padding: 6px 5px !important;
+  font-size: 0.8rem !important;
+}
+/* Container de busca fixo */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 230px;
+  flex: 0 0 auto;
+  min-width: 200px;
+  max-width: 240px;
+}
+.top-bar input[type="text"],
+.top-bar select {
+  padding: 6px 10px;
+  border: 1px solid #555;
+  border-radius: 50px;
+  background: #222;
+  color: #fff;
+  font-size: 0.82rem;
+}
+    .search-icon {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+      border: none;
+      padding: 7px 12px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .search-icon:hover {
+      background: linear-gradient(135deg, #F4E883, #D2AC47, #AE8625);
+      transform: translateY(-1px);
+    }
+    .search-expanded {
+      flex: 1;
+      min-width: 120px;
+    }
+    .top-bar input[type="text"] {
+      padding: 7px 12px;
+      border: 1px solid #555;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      transition: border-color 0.3s;
+      background-color: #222;
+      color: #fff;
+       width: 100px; /* ← Largura fixa para aumentar horizontalmente */
+  min-width: 125px;
+  max-width: 150px;
+    }
+    .top-bar input[type="text"]:focus {
+      border-color: #D2AC47;
+      outline: none;
+    }
+    
+    /* 5. Ajuste do placeholder do campo de busca */
+    #searchInput::placeholder {
+      font-size: 0.8rem;
+    }
+    
+    .top-bar select {
+      padding: 7px 12px;
+      border: 1px solid #555;
+      border-radius: 50px;
+      background: #222;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      color: #fff;
+      min-width: 170px;
+	  width: 170px;
+    }
+    .top-bar select:focus {
+      border-color: #D2AC47;
+      outline: none;
+    }
+    .progress-counter {
+      background: rgba(210, 172, 71, 0.25);
+      color: #F7EF8A;
+      padding: 5px 10px;
+      border-radius: 50px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+    }
+    #main-container {
+      display: flex;
+      flex-direction: column;
+      height: 320px;
+      gap: 12px;
+    }
+    .content-area {
+      display: flex;
+      gap: 12px;
+      height: 100%;
+    }
+    #topics-list-container {
+      flex: 1;
+      border: 1px solid #333;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 200px;
+      background: #000000;
+      max-height: 500px;
+      overflow-y: auto;
+    }
+    .list-header {
+      background: linear-gradient(to right, #222, #111);
+      color: #F7EF8A;
+      padding: 10px 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.3rem;
+    }
+    #topics-list {
+      flex: 1;
+      overflow-y: auto;
+      list-style: none;
+      background: #000000;
+    }
+    
+    /* 4. Ícone de edição sempre visível */
+    .topic-item {
+      padding: 10px 12px;
+      border-bottom: 1px solid #333;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #eee;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .topic-item:hover {
+      background: linear-gradient(to right, #2a2a2a, #222);
+      transform: translateX(3px);
+      box-shadow: inset 3px 0 6px rgba(244, 232, 131, 0.15);
+    }
+    .topic-item.active {
+      background: rgba(210, 172, 71, 0.15);
+      border-left: 3px solid #D2AC47;
+      box-shadow: inset 3px 0 8px rgba(210, 172, 71, 0.25);
+    }
+    
+    .topic-content {
+      flex: 1;
+    }
+    
+    .topic-title {
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #F7EF8A;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    /* 1. Ícones de status duplos para tópicos */
+    .status-icons {
+      display: flex;
+      gap: 4px;
+      margin-right: 8px;
+    }
+
+    .status-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .status-estudado {
+      background: #4CAF50;
+      color: white;
+    }
+
+    .status-revisado {
+      background: #FFC107;
+      color: black;
+    }
+    .status-questoes {
+  background: #2196F3;  /* Azul */
+  color: white;
+}
+    .edit-icon {
+      color: #D2AC47;
+      opacity: 0.7;
+      font-size: 0.9rem;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .edit-icon:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+    
+    .topic-discipline {
+      background: rgba(210, 172, 71, 0.25);
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      color:white;
+      font-weight: 500;
+    }
+    .topic-subtopic {
+      font-size: 1.2rem;
+      color: #ffffff;
+      margin-top: 4px;
+      font-style: italic;
+    }
+    #topic-detail-container {
+      flex: 2;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      background: #000000;
+      position: relative;
+    }
+    #topic-detail-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #F7EF8A;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #333;
+    }
+    #topic-detail-discipline {
+      font-size: 0.85rem;
+      color: white;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+    .topic-info {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 5px;
+      padding: 10px;
+      border: 1px solid #333;
+    }
+    .info-field {
+      display: flex;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .info-field:last-child {
+      margin-bottom: 0;
+    }
+    .info-label {
+      font-weight: bold;
+      min-width: 80px;
+      color: #F7EF8A;
+      font-size: 0.85rem;
+    }
+    .info-value {
+      flex: 1;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+    .info-value.editable {
+      background: rgba(210, 172, 71, 0.1);
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px dashed #D2AC47;
+    }
+    .edit-input {
+      width: 100%;
+      padding: 4px 8px;
+      border: 1px solid #D2AC47;
+      border-radius: 4px;
+      background: #222;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+    .edit-input:focus {
+      outline: none;
+      border-color: #F7EF8A;
+    }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      border-radius: 5px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .progress-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .progress-label i {
+      color: #D2AC47;
+    }
+    .progress-status {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+    /* --- ESTILOS DOS CHECKBOXES PERSONALIZADOS --- */
+    .custom-checkbox {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .custom-checkbox input[type="checkbox"] {
+      opacity: 0;
+      position: absolute;
+      width: 0;
+      height: 0;
+    }
+    .checkmark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #555;
+      background-color: #222;
+      color: transparent;
+      font-size: 14px;
+      font-weight: bold;
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  color: white;
+  border-color: #4CAF50;
+}
+
+/* Cores específicas para cada tipo de checkbox */
+.custom-checkbox.estudo input[type="checkbox"]:checked + .checkmark {
+  background-color: #4CAF50; /* Verde */
+  border-color: #4CAF50;
+}
+
+.custom-checkbox.revisao input[type="checkbox"]:checked + .checkmark {
+  background-color: #FFC107; /* Amarelo */
+  border-color: #FFC107;
+  color: black;
+}
+
+.custom-checkbox.questoes input[type="checkbox"]:checked + .checkmark {
+  background-color: #2196F3; /* Azul */
+  border-color: #2196F3;
+    }
+    .custom-checkbox input[type="checkbox"]:hover + .checkmark {
+      border-color: #D2AC47;
+    }
+    .date-input {
+      padding: 5px 8px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background: #222;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+    .resize-handle {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      background: #D2AC47;
+      color: #0D0D09;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: all 0.3s;
+      font-size: 0.75rem;
+    }
+    .resize-handle:hover {
+      transform: scale(1.1);
+      background: #F7EF8A;
+    }
+    .topic-actions {
+      display: flex;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid #333;
+      margin-top: auto;
+      z-index: 10;
+    }
+    .topic-actions button {
+      padding: 7px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .topic-actions button.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .topic-actions button:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+    .btn-save {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+    }
+    .btn-reset {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+    }
+    .btn-edit {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+    }
+    .btn-cancel {
+      background: linear-gradient(135deg, #666, #999, #444);
+      color: #fff;
+    }
+    .edit-mode-banner {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A);
+      color: #0D0D09;
+      padding: 8px 12px;
+      border-radius: 5px;
+      margin-bottom: 12px;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+    }
+    /* LOGIN STYLES - CORES IGUAIS AO PROJETO ANOTAÇÕES */
+    #login-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      text-align: center;
+      height: 100%;
+    }
+    #login-form {
+      background: #111;
+      padding: 20px;
+      border-radius: 8px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border: 1px solid #333;
+    }
+    #login-form h2 {
+      color: #D2AC47;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+    }
+    #login-form p {
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+    }
+    #login-form input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #555;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      transition: border-color 0.3s;
+      background: #222;
+      color: #fff;
+    }
+    #login-form input:focus {
+      border-color: #D2AC47;
+      outline: none;
+    }
+    #login-form button {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    #login-form button:hover {
+      background: linear-gradient(135deg, #F4E883, #D2AC47, #AE8625);
+      transform: translateY(-1px);
+    }
+    .login-spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(210, 172, 71, 0.3);
+      border-radius: 50%;
+      border-top-color: #D2AC47;
+      animation: spin 1s ease-in-out infinite;
+      margin: 8px auto;
+    }
+    #login-error {
+      color: #D2AC47;
+      margin-top: 10px;
+      text-align: center;
+      display: none;
+      font-size: 0.85rem;
+    }
+    .logout-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #D2AC47;
+      font-size: 0.9rem;
+      margin-left: 6px;
+      transition: color 0.3s;
+    }
+    .logout-button:hover {
+      color: #F7EF8A;
+    }
+    #loading-message, #error-message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      font-size: 1rem;
+      flex-direction: column;
+      gap: 12px;
+      text-align: center;
+      background: #000000;
+      border-radius: 6px;
+      padding: 15px;
+      color: #F7EF8A;
+    }
+    #loading-message i {
+      font-size: 2rem;
+      color: #D2AC47;
+      animation: spin 1.5s linear infinite;
+    }
+    #error-message {
+      color: #D2AC47;
+    }
+    .notification-container {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 1000;
+      max-width: 280px;
+      width: 100%;
+    }
+    .notification {
+      background: #111;
+      border-radius: 5px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 7.7s forwards;
+      border-left: 3px solid #D2AC47;
+      transition: transform 0.3s;
+      color: #F7EF8A;
+      font-size: 0.85rem;
+    }
+    .notification:hover {
+      transform: translateY(-2px);
+    }
+    .notification.error {
+      border-left-color: #D2AC47;
+    }
+    .notification-icon {
+      font-size: 1.1rem;
+    }
+    .success .notification-icon {
+      color: #D2AC47;
+    }
+    .error .notification-icon {
+      color: #D2AC47;
+    }
+    .notification-content {
+      flex: 1;
+    }
+    .notification-title {
+      font-weight: bold;
+      margin-bottom: 3px;
+      font-size: 0.9rem;
+    }
+    .notification-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: #777;
+      transition: color 0.3s;
+    }
+    .notification-close:hover {
+      color: #F7EF8A;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      display: none;
+    }
+    .modal {
+      background: #111;
+      border-radius: 6px;
+      padding: 15px;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      transform: translateY(-12px);
+      animation: modalAppear 0.4s ease forwards;
+      border: 1px solid #333;
+      color: #F7EF8A;
+    }
+    .modal h3 {
+      margin-bottom: 12px;
+      color: #D2AC47;
+      font-size: 1.2rem;
+    }
+    .modal p {
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+    .modal-buttons button {
+      padding: 7px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .modal-buttons button.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    .modal-buttons button:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+    .btn-modal-confirm {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+    }
+    .btn-modal-cancel {
+      background: linear-gradient(135deg, #D2AC47, #F7EF8A, #AE8625);
+      color: #0D0D09;
+    }
+    /* --- VISÃO GERAL AVANÇADA --- */
+    .overview-modal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 10px;
+      text-align: left;
+    }
+    .overview-text-summary {
+      background: #000000;
+      padding: 14px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      border: 1px solid #555;
+      white-space: pre-wrap;
+    }
+    .overview-chart {
+      background: #000000;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #555;
+    }
+    .chart-title {
+      color: #F7EF8A;
+      margin-bottom: 12px;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    /* Gráfico 1 */
+    .chart-1-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      align-items: flex-end;
+      height: 130px;
+      padding: 10px 0;
+    }
+    .bar {
+      width: 60px;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+    }
+    .bar-label {
+      position: absolute;
+      bottom: -28px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+    .bar.estudado { background: #4CAF50; }
+    .bar.nao-estudado { background: #F44336; }
+    /* Gráfico 2 */
+    .discipline-progress {
+      margin-bottom: 14px;
+    }
+    .discipline-name {
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+      color: #F7EF8A;
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .progress-bar-container {
+      height: 22px;
+      background: #333;
+      border-radius: 11px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #4CAF50, #8BC34A);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+      color: #000;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    /* Gráfico 3 */
+    .chart-3-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      align-items: flex-end;
+      height: 150px;
+      padding: 10px 0;
+    }
+    .stacked-bar {
+      width: 50px;
+      display: flex;
+      flex-direction: column-reverse;
+      border-radius: 4px 4px 0 0;
+    }
+    .stacked-segment {
+      width: 100%;
+    }
+    .segment-revisado { background: #2196F3; }
+    .segment-nao-revisado { background: #9E9E9E; }
+    
+    /* ESTILOS PARA AS CAIXAS DE VISÃO GERAL - ALINHADAS */
+    .overview-box {
+      padding: 0px 6px !important;
+      font-size: 1.2rem !important;
+      line-height: 0.8 !important;
+      min-height: 6px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 5px !important;
+      text-align: center;
+      flex: 1;
+      margin: 1px;
+    }
+    
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2px;
+      gap: 8px;
+    }
+
+    /* --- NOVO MODAL: METAS DO USUÁRIO --- */
+    #userGoalsModal .modal {
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .form-field-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .form-field {
+      flex: 1;
+      min-width: 200px;
+    }
+    .form-field label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.85rem;
+      color: #F7EF8A;
+    }
+    .form-field input[type="number"],
+    .form-field input[type="date"] {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid #555;
+      border-radius: 4px;
+      background: #222;
+      color: #fff;
+      font-size: 0.85rem;
+    }
+    .form-field input[type="number"]:focus,
+    .form-field input[type="date"]:focus {
+      border-color: #D2AC47;
+      outline: none;
+    }
+
+    /* ESTILOS PARA O RAIO X (NOVOS) */
+    .resources-list {
+      list-style: none;
+      margin-top: 5px;
+    }
+    .resources-list li {
+      padding: 2px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .critical-points {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 10px;
+      color: #000;
+    }
+    
+    /* NOVOS ESTILOS PARA AS CORREÇÕES SOLICITADAS */
+    .dicas-content {
+  line-height: 0.9 !important;
+  font-size: 0.95rem !important;
+  color: #ffffff !important; /* CORREÇÃO 6: Texto das dicas em branco */
+}
+.dicas-content div {
+  margin-bottom: 1px !important;
+  color: #ffffff !important; /* CORREÇÃO 6: Texto das dicas em branco */
+}
+.dicas-content br {
+  display: none !important;
+}
+.bigger-font {
+  font-size: 1.5em !important;
+  font-weight: bold !important;
+  line-height: 1.2 !important;
+}
+.raiox-personalizadas .overview-text-summary {
+  font-size: 1.2em !important;
+  line-height: 1.4 !important;
+}
+.raiox-personalizadas .overview-text-summary div {
+  font-size: 1.25em !important;
+}
+.raiox-medias .overview-text-summary div {
+  font-size: 1.25em !important;
+}
+
+/* NOVOS ESTILOS PARA BOTÃO DADOS - CONTAINERS INDIVIDUAIS */
+.dados-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+.dados-item {
+  background: #000000;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+}
+.dados-label {
+  font-weight: bold;
+  color: #FFD700;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+.dados-value {
+  color: #ffffff;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+/* CORREÇÃO 4: Aumentar tamanho das letras na distribuição de questões */
+.distribuicao-questoes {
+  font-size: 1.2em !important;
+}
+.distribuicao-questoes div {
+  font-size: 1.1em !important;
+}
+
+    /* ANIMAÇÃO DE PULSAÇÃO PARA FEEDBACK POSITIVO */
+    .pulse-animation {
+        animation: pulseSuccess 0.6s ease-in-out 2;
+    }
+    
+    @keyframes pulseSuccess {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @keyframes modalAppear {
+      from { opacity: 0; transform: translateY(-12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Ajustes responsivos */
+    @media (max-width: 768px) {
+      #main-container {
+        flex-direction: column;
+        height: auto;
+        min-height: 500px;
+      }
+      header h1 {
+        font-size: 1.4rem;
+      }
+      .app-header {
+        flex-direction: column;
+        gap: 8px;
+        align-items: flex-start;
+      }
+      .progress-app {
+        padding: 10px;
+      }
+      #topics-list-container {
+        min-width: unset;
+        max-width: unset;
+        height: 180px;
+      }
+      .user-info {
+        font-size: 0.8rem;
+      }
+      .progress-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .progress-status {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .info-field {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .info-label {
+        margin-bottom: 4px;
+      }
+      .summary-row {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .form-field-row {
+        flex-direction: column;
+      }
+      .dados-container {
+        grid-template-columns: 1fr;
+      }
+      .search-container {
+        max-width: 100%;
+        grid-column: 1 / -1;
+      }
+      .topic-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .edit-icon {
+        align-self: flex-end;
+        margin-top: 5px;
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+      .container {
+        padding: 10px;
+        border-radius: 8px;
+      }
+      .topic-actions {
+        flex-direction: column;
+      }
+      #login-container {
+        padding: 15px;
+      }
+      #login-form {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="app-container">
+      <div class="progress-app">
+        <!-- CONTAINER DE LOGIN -->
+        <div id="login-container" style="display: flex;">
+          <form id="login-form">
+            <h2><i class="fas fa-user-circle"></i> Acesso ao Sistema</h2>
+            <p>Digite o nome do usuário conforme configurado pelo administrador:</p>
+            <input type="text" id="user-name" placeholder="Nome do usuário" required>
+            <button type="submit">
+              <i class="fas fa-sign-in-alt"></i> Acessar
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <div class="login-spinner" id="login-spinner"></div>
+            <div id="login-error" style="display: none;"></div>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #888;">
+              <i class="fas fa-info-circle"></i> O nome do usuário deve corresponder exatamente ao configurado na planilha.
+            </p>
+          </form>
+        </div>
+        <!-- CONTEÚDO PRINCIPAL (APÓS LOGIN) -->
+        <div id="app-content" style="display: none;">
+          <div class="app-header">
+            <h2><i class="fas fa-tasks"></i> Controle de Progresso - Edital</h2>
+            <div class="user-info">
+              <i class="fas fa-user-circle"></i>
+              <span id="user-name-display">Usuário</span>
+              <button class="logout-button" onclick="logout()" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+              </button>
+            </div>
+          </div>
+          <div class="top-bar">
+            <button onclick="showProgressOverviewWithLoading()">
+              <i class="fas fa-chart-bar"></i> Visão Geral
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <button onclick="showIndividualProgressOverviewWithLoading()">
+              <i class="fas fa-chart-bar"></i> Minha Visão Geral
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <button onclick="openUserGoalsModal()">
+              <i class="fas fa-bullseye"></i> Minhas Metas
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <button onclick="showRaioXOverviewWithLoading()">
+              <i class="fas fa-binoculars"></i> Raio X do Edital
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <!-- NOVO BOTÃO DADOS -->
+            <button onclick="showDadosOverviewWithLoading()">
+              <i class="fas fa-database"></i> Dados
+              <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+            </button>
+            <div class="search-container">
+              <div class="search-expanded">
+                <input type="text" id="searchInput" placeholder="Tópicos" oninput="filterTopics()">
+              </div>
+              <select id="disciplineFilter" onchange="filterTopics()">
+                <option value="">Todas as Disciplinas</option>
+              </select>
+            </div>
+          </div>
+          <div id="main-container">
+            <div id="loading-message">
+              <i class="fas fa-spinner"></i>
+              <p>Carregando progresso...</p>
+            </div>
+            <div id="error-message" style="display:none;"></div>
+            <div class="content-area">
+              <div id="topics-list-container" style="display:none;">
+                <div class="list-header">
+                  <span>Tópicos do Edital</span>
+                  <span id="filtered-counter">0/0</span>
+                </div>
+                <ul id="topics-list"></ul>
+              </div>
+              <div id="topic-detail-container" style="display:none;">
+                <div class="resize-handle" title="Expandir/Contrair" onclick="toggleContainerSize()">
+                  <i class="fas fa-expand"></i>
+                </div>
+                <!-- Banner de Modo Edição -->
+                <div class="edit-mode-banner" id="edit-mode-banner">
+                  <i class="fas fa-edit"></i> MODO EDIÇÃO ATIVADO - Você está editando informações do tópico
+                </div>
+                <div id="topic-detail-title">Título do Tópico</div>
+                <div id="topic-detail-discipline">
+                  <i class="fas fa-book"></i>
+                  <span>Disciplina</span>
+                </div>
+                <!-- Nova estrutura: Informações + Controles de Progresso em colunas -->
+                <div style="display: flex; gap: 15px; margin-top: 10px;">
+                  <!-- Coluna da Esquerda: Informações do Tópico -->
+                  <div class="topic-info" style="flex: 1; min-width: 250px;">
+                    <div class="info-field">
+                      <span class="info-label">Disciplina:</span>
+                      <span class="info-value" id="info-disc">Carregando...</span>
+                      <input type="text" class="edit-input" id="edit-disc" style="display: none;">
+                    </div>
+                    <div class="info-field">
+                      <span class="info-label">Sequência:</span>
+                      <span class="info-value" id="info-seq">Carregando...</span>
+                      <input type="text" class="edit-input" id="edit-seq" style="display: none;">
+                    </div>
+                    <div class="info-field">
+                      <span class="info-label">Tópico:</span>
+                      <span class="info-value" id="info-topico">Carregando...</span>
+                      <input type="text" class="edit-input" id="edit-topico" style="display: none;">
+                    </div>
+                    <div class="info-field">
+                      <span class="info-label">Subtópico:</span>
+                      <span class="info-value" id="info-subtopico">Carregando...</span>
+                      <input type="text" class="edit-input" id="edit-subtopico" style="display: none;">
+                    </div>
+                  </div>
+                  <!-- Coluna da Direita: Controles de Progresso -->
+                  <div class="progress-controls" style="flex: 1; min-width: 300px; overflow-y: auto; max-height: 250px; border: 1px solid #333; border-radius: 5px; padding: 10px; background: rgba(255, 255, 255, 0.05);">
+                    <div class="progress-item">
+                      <div class="progress-label">
+                        <i class="fas fa-book"></i>
+                        <span>Estudo Concluído</span>
+                      </div>
+                      <div class="progress-status">
+                        <label class="custom-checkbox estudo">
+  <input type="checkbox" id="estudo-checkbox" onchange="updateCheckboxStatus('estudo')">
+  <span class="checkmark">✓</span>
+</label>
+                        <input type="date" class="date-input" id="estudo-date">
+                      </div>
+                    </div>
+                    <div class="progress-item">
+                      <div class="progress-label">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Revisão Concluída</span>
+                      </div>
+                      <div class="progress-status">
+                       <label class="custom-checkbox revisao">
+  <input type="checkbox" id="revisao-checkbox" onchange="updateCheckboxStatus('revisao')">
+  <span class="checkmark">✓</span>
+</label>
+                        <input type="date" class="date-input" id="revisao-date">
+                      </div>
+                    </div>
+                    <div class="progress-item">
+                      <div class="progress-label">
+                        <i class="fas fa-question-circle"></i>
+                        <span>Questões Concluídas</span>
+                      </div>
+                      <div class="progress-status">
+                        <label class="custom-checkbox questoes">
+  <input type="checkbox" id="questoes-checkbox" onchange="updateCheckboxStatus('questoes')">
+  <span class="checkmark">✓</span>
+</label>
+                        <input type="date" class="date-input" id="questoes-date">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Ações -->
+                <div class="topic-actions">
+                  <button class="btn-save" onclick="saveProgress()" id="save-progress-btn">
+                    <i class="fas fa-save"></i> Salvar Progresso
+                    <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+                  </button>
+                  <button class="btn-reset" onclick="resetProgress()" id="reset-progress-btn">
+                    <i class="fas fa-undo"></i> Limpar Progresso
+                    <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+                  </button>
+                  <button class="btn-edit" id="edit-topic-btn" onclick="toggleEditMode()">
+                    <i class="fas fa-edit"></i> Editar Tópico
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICAÇÕES -->
+  <div class="notification-container" id="notification-container"></div>
+
+  <!-- MODAL DE CONFIRMAÇÃO -->
+  <div class="modal-backdrop" id="confirmModal">
+    <div class="modal">
+      <h3>Confirmação</h3>
+      <p id="confirmMessage">Tem certeza que deseja executar esta ação?</p>
+      <div class="modal-buttons">
+        <button class="btn-modal-cancel" onclick="closeModal(false)">Cancelar</button>
+        <button class="btn-modal-confirm" onclick="closeModal(true)">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE VISÃO GERAL -->
+  <div class="modal-backdrop" id="overviewModal">
+    <div class="modal" style="width: 92%; max-width: 900px; max-height: 92vh; overflow: hidden; text-align: center; position: relative;">
+      <button class="btn-modal-cancel" onclick="closeOverviewModal()" style="position: absolute; top: 10px; right: 8px; padding: 2px 4px; font-size: 0.75rem; z-index: 10;">
+        <i class="fas fa-times"></i> Fechar
+      </button>
+      <h3 id="overview-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-chart-bar"></i> VISÃO GERAL</h3>
+      <div id="overview-content" class="overview-modal-content" style="padding-top: 0;"></div>
+    </div>
+  </div>
+
+  <!-- NOVO MODAL: DADOS -->
+  <div class="modal-backdrop" id="dadosModal">
+    <div class="modal" style="width: 92%; max-width: 900px; max-height: 92vh; overflow: hidden; text-align: center; position: relative;">
+      <button class="btn-modal-cancel" onclick="closeDadosModal()" style="position: absolute; top: 10px; right: 8px; padding: 2px 4px; font-size: 0.75rem; z-index: 10;">
+        <i class="fas fa-times"></i> Fechar
+      </button>
+      <h3 id="dados-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-database"></i> DADOS DO EDITAL</h3>
+      <div id="dados-content" class="overview-modal-content" style="padding-top: 0;"></div>
+    </div>
+  </div>
+
+  <!-- NOVO MODAL: METAS DO USUÁRIO -->
+  <div class="modal-backdrop" id="userGoalsModal">
+    <div class="modal">
+      <h3><i class="fas fa-bullseye"></i> Minhas Metas e Contadores</h3>
+      <div class="form-field-row">
+        <div class="form-field">
+          <label for="goal-Meta Diária Tópicos">Meta Diária Tópicos</label>
+          <input type="number" id="goal-Meta Diária Tópicos" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Meta Horas Estudo">Meta Horas Estudo</label>
+          <input type="number" id="goal-Meta Horas Estudo" min="0" step="0.5">
+        </div>
+        <div class="form-field">
+          <label for="goal-Meta Data Conclusão">Meta Data Conclusão</label>
+          <input type="date" id="goal-Meta Data Conclusão">
+        </div>
+      </div>
+      <div class="form-field-row">
+        <div class="form-field">
+          <label for="goal-Meta T. Páginas">Meta T. Páginas</label>
+          <input type="number" id="goal-Meta T. Páginas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Meta T. Vídeo Aulas">Meta T. Vídeo Aulas</label>
+          <input type="number" id="goal-Meta T. Vídeo Aulas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Meta T. Artigos">Meta T. Artigos</label>
+          <input type="number" id="goal-Meta T. Artigos" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Meta T. Flashcards">Meta T. Flashcards</label>
+          <input type="number" id="goal-Meta T. Flashcards" min="0">
+        </div>
+      </div>
+      <div class="form-field-row">
+        <div class="form-field">
+          <label for="goal-Total Material Páginas">Total Material Páginas</label>
+          <input type="number" id="goal-Total Material Páginas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Total Material Vídeo Aulas">Total Material Vídeo Aulas</label>
+          <input type="number" id="goal-Total Material Vídeo Aulas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Total Material Artigos">Total Material Artigos</label>
+          <input type="number" id="goal-Total Material Artigos" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Total Material Flashcards">Total Material Flashcards</label>
+          <input type="number" id="goal-Total Material Flashcards" min="0">
+        </div>
+      </div>
+      <div class="form-field-row">
+        <div class="form-field">
+          <label for="goal-Páginas Concluídas">Páginas Concluídas</label>
+          <input type="number" id="goal-Páginas Concluídas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Vídeo Aulas Concluídas">Vídeo Aulas Concluídas</label>
+          <input type="number" id="goal-Vídeo Aulas Concluídas" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Artigos Concluídos">Artigos Concluídos</label>
+          <input type="number" id="goal-Artigos Concluídos" min="0">
+        </div>
+        <div class="form-field">
+          <label for="goal-Flashcards Concluídos">Flashcards Concluídos</label>
+          <input type="number" id="goal-Flashcards Concluídos" min="0">
+        </div>
+      </div>
+      <div class="modal-buttons">
+        <button class="btn-modal-cancel" onclick="closeUserGoalsModal()">Fechar</button>
+        <button class="btn-modal-confirm" onclick="saveUserGoals()" id="save-goals-btn">
+          Salvar Metas
+          <i class="fas fa-spinner button-spinner" style="display: none;"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- CONFIGURAÇÃO ---
+    let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygSW2z33jnRiVq8S_PAcucOSXkKHsLSZ6DKXYSfP4O9XdziYuHo7yGBF4iCNUv5No6sA/exec";
+
+    // --- VARIÁVEIS GLOBAIS ---
+    let allTopics = [];
+    let filteredTopics = [];
+    let currentTopicSequence = null;
+    let isContainerExpanded = false;
+    let isEditMode = false;
+    let originalTopicData = {};
+    let currentUserName = null;
+    let currentUserGoals = {};
+    let globalMetas = {};
+
+    // --- FUNÇÕES AUXILIARES ---
+    function setButtonLoading(button, isLoading) {
+      if (isLoading) {
+        button.classList.add('loading');
+      } else {
+        button.classList.remove('loading');
+      }
+    }
+
+    function formatarData(dataISO) {
+      if (!dataISO) return '—';
+      const data = new Date(dataISO);
+      const dia = String(data.getDate()).padStart(2, '0');
+      const mes = String(data.getMonth() + 1).padStart(2, '0');
+      const ano = data.getFullYear();
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    // --- INICIALIZAÇÃO ---
+    document.addEventListener("DOMContentLoaded", function() {
+      const loginForm = document.getElementById("login-form");
+      if (loginForm) {
+        loginForm.addEventListener("submit", function(e) {
+          e.preventDefault();
+          login();
+        });
+      }
+      const savedUser = localStorage.getItem('currentUserName');
+      if (savedUser) {
+        currentUserName = savedUser;
+        document.getElementById('user-name-display').textContent = savedUser;
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('app-content').style.display = 'block';
+        loadAllData();
+      }
+    });
+
+    // --- SISTEMA DE LOGIN ---
+    async function login() {
+      const nameInput = document.getElementById('user-name');
+      const errorElement = document.getElementById('login-error');
+      const submitButton = document.querySelector('#login-form button[type="submit"]');
+      const buttonSpinner = submitButton.querySelector('.button-spinner');
+      const buttonIcon = submitButton.querySelector('.fa-sign-in-alt');
+      
+      if (nameInput) {
+        const userName = nameInput.value.trim();
+        if (!userName) {
+          errorElement.textContent = 'Por favor, digite o nome do usuário.';
+          errorElement.style.display = 'block';
+          return;
+        }
+        
+        // Mostrar spinner e esconder ícone
+        setButtonLoading(submitButton, true);
+        buttonIcon.style.display = 'none';
+        buttonSpinner.style.display = 'inline-block';
+        errorElement.style.display = 'none';
+        
+        try {
+          const url = new URL(WEB_APP_URL);
+          url.searchParams.append('action', 'read');
+          url.searchParams.append('userEmail', userName);
+          
+          console.log('Tentando login para:', userName);
+          console.log('URL:', url.toString());
+          
+          const response = await fetch(url, { redirect: 'follow' });
+          
+          if (!response.ok) {
+            throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
+          }
+          
+          const result = await response.json();
+          console.log('Resposta do servidor:', result);
+          
+          // Verificação mais flexível para usuário
+          if (result.error) {
+            // Se houver erro mas os dados existirem, permite o login
+            if (result.data && result.data.topics) {
+              console.log('Erro ignorado - dados encontrados, permitindo login');
+            } else {
+              throw new Error(result.error);
+            }
+          }
+          
+          // Login bem-sucedido
+          currentUserName = userName;
+          localStorage.setItem('currentUserName', userName);
+          document.getElementById('user-name-display').textContent = userName;
+          document.getElementById('login-container').style.display = 'none';
+          document.getElementById('app-content').style.display = 'block';
+          showNotification('Login realizado com sucesso!');
+          
+          // Carregar dados
+          await loadAllData();
+          
+        } catch (error) {
+          console.error("Erro detalhado no login:", error);
+          
+          // Mensagens de erro mais específicas
+          if (error.message.includes('Failed to fetch')) {
+            errorElement.textContent = 'Erro de conexão. Verifique sua internet e tente novamente.';
+          } else if (error.message.includes('não encontrada') || error.message.includes('não encontrado')) {
+            errorElement.textContent = 'Usuário não encontrado. Verifique o nome ou entre em contato com o administrador.';
+          } else if (error.message.includes('404') || error.message.includes('500')) {
+            errorElement.textContent = 'Erro no servidor. Tente novamente em alguns instantes.';
+          } else {
+            errorElement.textContent = `Erro: ${error.message}`;
+          }
+          errorElement.style.display = 'block';
+          
+        } finally {
+          // Restaurar ícone e esconder spinner
+          setButtonLoading(submitButton, false);
+          buttonIcon.style.display = 'inline-block';
+          buttonSpinner.style.display = 'none';
+        }
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('currentUserName');
+      currentUserName = null;
+      allTopics = [];
+      filteredTopics = [];
+      currentUserGoals = {};
+      globalMetas = {};
+      document.getElementById('login-container').style.display = 'flex';
+      document.getElementById('app-content').style.display = 'none';
+      document.getElementById('user-name').value = '';
+      showNotification('Você saiu do sistema.', 'success');
+    }
+
+    // --- FUNÇÕES DE INTERFACE ---
+    function toggleContainerSize() {
+      const container = document.getElementById("topic-detail-container");
+      isContainerExpanded = !isContainerExpanded;
+      if (isContainerExpanded) {
+        container.style.flex = "3";
+        document.querySelector('.resize-handle i').className = 'fas fa-compress';
+        document.querySelector('.resize-handle').title = "Contrair";
+      } else {
+        container.style.flex = "2";
+        document.querySelector('.resize-handle i').className = 'fas fa-expand';
+        document.querySelector('.resize-handle').title = "Expandir";
+      }
+    }
+
+    function showNotification(message, type = 'success') {
+      const container = document.getElementById('notification-container');
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
+        <div class="notification-icon ${type}">
+          <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'}"></i>
+        </div>
+        <div class="notification-content">
+          <div class="notification-title">${type === 'success' ? 'Sucesso!' : 'Erro!'}</div>
+          <div class="notification-text">${message}</div>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()">
+          <i class="fas fa-times"></i>
+        </button>
+      `;
+      container.appendChild(notification);
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 8000); // Aumentado de 5000 para 8000 ms (8 segundos)
+    }
+
+    function showConfirm(message, callback) {
+      document.getElementById('confirmMessage').textContent = message;
+      document.getElementById('confirmModal').style.display = 'flex';
+      window.deleteCallback = callback;
+    }
+
+    function closeModal(confirmed) {
+      document.getElementById('confirmModal').style.display = 'none';
+      if (window.deleteCallback) {
+        window.deleteCallback(confirmed);
+        window.deleteCallback = null;
+      }
+    }
+
+    function showSection(sectionId) {
+      const sections = [
+        "topics-list-container",
+        "topic-detail-container",
+        "loading-message",
+        "error-message"
+      ];
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+      });
+      if (sectionId && document.getElementById(sectionId)) {
+        document.getElementById(sectionId).style.display = 'block';
+      }
+    }
+
+    function updateTopicCounter() {
+      const filteredCounter = document.getElementById("filtered-counter");
+      if (filteredCounter) {
+        filteredCounter.textContent = `${filteredTopics.length}/${allTopics.length}`;
+      }
+    }
+
+    function populateDisciplineFilter() {
+      const filterSelect = document.getElementById("disciplineFilter");
+      if (filterSelect) {
+        filterSelect.innerHTML = "<option value=\"\">Todas as Disciplinas</option>";
+        const disciplines = [...new Set(allTopics.map(topic => topic.Disciplinas).filter(discipline => discipline))];
+        disciplines.forEach(discipline => {
+          const option = document.createElement("option");
+          option.value = discipline;
+          option.textContent = discipline;
+          filterSelect.appendChild(option);
+        });
+      }
+    }
+
+    function displayTopicsList() {
+      const listElement = document.getElementById("topics-list");
+      if (listElement) {
+        listElement.innerHTML = "";
+        filteredTopics.forEach(topic => {
+          const listItem = document.createElement("li");
+          listItem.className = "topic-item";
+          if (topic.Seq === currentTopicSequence) {
+              listItem.classList.add("active");
+          }
+          listItem.dataset.sequence = topic.Seq;
+          
+          // Ícones de status
+          const estudoStatus = topic['Status Estudo'] === 'Concluído';
+          const revisaoStatus = topic['Status Revisão'] === 'Concluído';
+		  const questoesStatus = topic['Status Questões'] === 'Concluído';
+          
+          // Conteúdo do tópico
+          const topicContent = `
+            <div class="topic-content">
+              <div class="topic-discipline">${topic.Disciplinas ? topic.Disciplinas : "Sem disciplina"}</div>
+              <div class="topic-title">
+                <span class="status-icons">
+                  <span class="status-icon ${estudoStatus ? 'status-estudado' : ''}">${estudoStatus ? '✓' : ''}</span>
+                  <span class="status-icon ${revisaoStatus ? 'status-revisado' : ''}">${revisaoStatus ? '✓' : ''}</span>
+				  <span class="status-icon ${questoesStatus ? 'status-questoes' : ''}">${questoesStatus ? '✓' : ''}</span>
+                </span>
+                ${topic.Seq} - ${topic.Tópicos || "Sem título"}
+              </div>
+              ${topic.Subtópicos && topic.Subtópicos !== '—' ? `<div class="topic-subtopic">${topic.Subtópicos}</div>` : ''}
+            </div>
+            <i class="fas fa-pencil-alt edit-icon" title="Editar tópico"></i>
+          `;
+          
+          listItem.innerHTML = topicContent;
+          
+          // Event listener para clique no tópico
+          listItem.addEventListener("click", (e) => {
+            // Não dispara se clicar no ícone de edição
+            if (!e.target.classList.contains('edit-icon') && !e.target.closest('.edit-icon')) {
+              showTopicDetails(topic.Seq);
+            }
+          });
+          
+          // Event listener para o ícone de edição
+          const editIcon = listItem.querySelector('.edit-icon');
+          editIcon.addEventListener("click", (e) => {
+            e.stopPropagation(); // Impede que o clique no ícone dispare o showTopicDetails
+            showTopicDetails(topic.Seq);
+            setTimeout(() => {
+              if (!isEditMode) {
+                toggleEditMode();
+              }
+            }, 100);
+          });
+          
+          listElement.appendChild(listItem);
+        });
+        updateTopicCounter();
+        showSection("topics-list-container");
+      }
+    }
+
+    function showTopicDetails(sequence) {
+      const topic = allTopics.find(t => t.Seq == sequence);
+      if (!topic) return;
+      currentTopicSequence = topic.Seq;
+      if (document.getElementById("topic-detail-title")) {
+        let titleHtml = `<i class="fas fa-book"></i> ${topic.Disciplinas || "Sem disciplina"} - ${topic.Seq}`;
+        if (topic.Subtópicos && topic.Subtópicos !== '—') {
+          titleHtml += `<br><i class="fas fa-level-down-alt"></i> ${topic.Subtópicos}`;
+        }
+        document.getElementById("topic-detail-title").innerHTML = titleHtml;
+      }
+      if (document.getElementById("topic-detail-discipline")) {
+        document.getElementById("topic-detail-discipline").textContent = topic.Tópicos || "Sem título";
+      }
+      document.getElementById('info-disc').textContent = topic.Disciplinas || '';
+      document.getElementById('info-seq').textContent = topic.Seq || '';
+      document.getElementById('info-topico').textContent = topic.Tópicos || '';
+      document.getElementById('info-subtopico').textContent = topic.Subtópicos || '';
+      updateStatusCheckboxes(topic);
+      document.querySelectorAll(".topic-item").forEach(item => {
+        item.classList.remove("active");
+        if (item.dataset.sequence == topic.Seq) {
+          item.classList.add("active");
+        }
+      });
+      showSection("topic-detail-container");
+    }
+
+    function updateStatusCheckboxes(topic) {
+      document.getElementById('estudo-checkbox').checked = (topic['Status Estudo'] === 'Concluído');
+      document.getElementById('estudo-date').value = topic['Data Estudo'] || '';
+      document.getElementById('revisao-checkbox').checked = (topic['Status Revisão'] === 'Concluído');
+      document.getElementById('revisao-date').value = topic['Data Revisão'] || '';
+      document.getElementById('questoes-checkbox').checked = (topic['Status Questões'] === 'Concluído');
+      document.getElementById('questoes-date').value = topic['Data Questões'] || '';
+    }
+
+    function filterTopics() {
+      const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+      const disciplineFilter = document.getElementById("disciplineFilter").value;
+      filteredTopics = allTopics.filter(topic => {
+        const matchesSearch = 
+          (topic.Tópicos && topic.Tópicos.toLowerCase().includes(searchTerm)) ||
+          (topic.Disciplinas && topic.Disciplinas.toLowerCase().includes(searchTerm)) ||
+          (topic.Subtópicos && topic.Subtópicos.toLowerCase().includes(searchTerm));
+        const matchesDiscipline = disciplineFilter === "" || topic.Disciplinas === disciplineFilter;
+        return matchesSearch && matchesDiscipline;
+      });
+      displayTopicsList();
+    }
+
+    function updateCheckboxStatus(statusType) {
+      const checkbox = document.getElementById(`${statusType}-checkbox`);
+      const dateInput = document.getElementById(`${statusType}-date`);
+      if (checkbox.checked) {
+        if (!dateInput.value) {
+          const today = new Date().toISOString().split('T')[0];
+          dateInput.value = today;
+        }
+      } else {
+        dateInput.value = '';
+      }
+    }
+
+    function closeOverviewModal() {
+      document.getElementById('overviewModal').style.display = 'none';
+    }
+
+    function closeDadosModal() {
+      document.getElementById('dadosModal').style.display = 'none';
+    }
+
+    // --- NOVAS FUNÇÕES COM LOADING ---
+    async function showProgressOverviewWithLoading() {
+      const button = document.querySelector('.top-bar button:nth-child(1)');
+      setButtonLoading(button, true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 300)); // Simula um pequeno delay
+        showProgressOverview();
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    async function showIndividualProgressOverviewWithLoading() {
+      const button = document.querySelector('.top-bar button:nth-child(2)');
+      setButtonLoading(button, true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        showIndividualProgressOverview();
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    async function showRaioXOverviewWithLoading() {
+      const button = document.querySelector('.top-bar button:nth-child(4)');
+      setButtonLoading(button, true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        showRaioXOverview();
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    // --- NOVA FUNÇÃO PARA BOTÃO DADOS ---
+    async function showDadosOverviewWithLoading() {
+      const button = document.querySelector('.top-bar button:nth-child(5)');
+      setButtonLoading(button, true);
+      try {
+        await new Promise(resolve => setTimeout(resolve, 300));
+        showDadosOverview();
+      } finally {
+        setButtonLoading(button, false);
+      }
+    }
+
+    // --- NOVAS FUNÇÕES DE DADOS ---
+    async function loadAllData() {
+      try {
+        showSection("loading-message");
+        await Promise.all([loadTopics(), loadGlobalMetas()]);
+        showSection("topics-list-container");
+        updateTopicCounter();
+        // ✅ RESTAURADO: MOSTRAR VISÃO GERAL AUTOMATICAMENTE APÓS CARREGAR OS TÓPICOS (como no V16)
+        showProgressOverview();
+      } catch (error) {
+        console.error("Erro ao carregar todos os dados:", error);
+        showNotification(`Falha ao carregar dados: ${error.message}`, 'error');
+      }
+    }
+
+    async function loadTopics() {
+      if (!currentUserName) {
+        showNotification('Usuário não autenticado.', 'error');
+        return;
+      }
+      try {
+        const url = new URL(WEB_APP_URL);
+        url.searchParams.append('action', 'read');
+        url.searchParams.append('userEmail', currentUserName);
+        const response = await fetch(url, { redirect: 'follow' });
+        if (!response.ok) throw new Error(`Erro ${response.status}`);
+        const result = await response.json();
+        if (result.success === false || result.error) {
+          throw new Error(result.error || 'Erro desconhecido do servidor');
+        }
+        if (!result.data || !Array.isArray(result.data.topics)) {
+          throw new Error('Resposta do servidor inválida: dados ausentes ou malformados');
+        }
+        allTopics = result.data.topics;
+        currentUserGoals = result.data.userGoals || {};
+        filteredTopics = [...allTopics];
+        populateDisciplineFilter();
+        displayTopicsList();
+        updateTopicCounter();
+      } catch (error) {
+        console.error("Erro ao carregar tópicos:", error);
+        throw error;
+      }
+    }
+
+    async function loadGlobalMetas() {
+      try {
+        const url = new URL(WEB_APP_URL);
+        url.searchParams.append('action', 'readOverviewMetrics');
+        const response = await fetch(url, { redirect: 'follow' });
+        if (!response.ok) throw new Error(`Erro ${response.status}`);
+        const result = await response.json();
+        if (result.success === false || result.error) {
+          throw new Error(result.error || 'Erro ao carregar métricas globais');
+        }
+        globalMetas = result.data || {};
+      } catch (error) {
+        console.error("Erro ao carregar métricas globais:", error);
+        throw error;
+      }
+    }
+
+    // --- NOVAS FUNÇÕES DE UI ---
+    function openUserGoalsModal() {
+  const modal = document.getElementById('userGoalsModal');
+  const fields = [
+    'Meta Diária Tópicos', 'Meta Horas Estudo', 'Meta Data Conclusão',
+    'Meta T. Páginas', 'Meta T. Vídeo Aulas', 'Meta T. Artigos', 'Meta T. Flashcards',
+    'Total Material Páginas', 'Total Material Vídeo Aulas', 'Total Material Artigos', 'Total Material Flashcards',
+    'Páginas Concluídas', 'Vídeo Aulas Concluídas', 'Artigos Concluídos', 'Flashcards Concluídos'
+  ];
+  
+  fields.forEach(key => {
+    const input = document.getElementById(`goal-${key}`);
+    if (input) {
+      const value = currentUserGoals[key];
+      
+      // CORREÇÃO ESPECÍFICA APENAS PARA O CAMPO DE DATA
+      if (key === 'Meta Data Conclusão' && value) {
+        // Garante que a data esteja no formato correto para o input type="date"
+        const date = new Date(value);
+        if (!isNaN(date.getTime())) {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          input.value = `${year}-${month}-${day}`;
+        } else {
+          input.value = value; // Fallback
+        }
+      } else {
+        // Para todos os outros campos, mantém a lógica original
+        if (input.type === 'date') {
+          input.value = value || '';
+        } else {
+          input.value = value !== undefined && value !== '' ? value : '';
+        }
+      }
+    }
+  });
+  
+  modal.style.display = 'flex';
+}
+
+    function closeUserGoalsModal() {
+      document.getElementById('userGoalsModal').style.display = 'none';
+    }
+
+    // --- FUNÇÃO SALVAR METAS OTIMIZADA ---
+    async function saveUserGoals() {
+      const saveBtn = document.getElementById('save-goals-btn');
+      setButtonLoading(saveBtn, true);
+      
+      const fields = [
+        'Meta Diária Tópicos', 'Meta Horas Estudo', 'Meta Data Conclusão',
+        'Meta T. Páginas', 'Meta T. Vídeo Aulas', 'Meta T. Artigos', 'Meta T. Flashcards',
+        'Total Material Páginas', 'Total Material Vídeo Aulas', 'Total Material Artigos', 'Total Material Flashcards',
+        'Páginas Concluídas', 'Vídeo Aulas Concluídas', 'Artigos Concluídos', 'Flashcards Concluídos'
+      ];
+
+      let hasError = false;
+      let savedCount = 0;
+      let skippedCount = 0;
+
+      for (const key of fields) {
+        const input = document.getElementById(`goal-${key}`);
+        let value = input.value.trim();
+        
+        // PULAR CAMPOS VAZIOS OU ZERO
+        if (value === '' || value === '0' || value === '0.0') {
+          skippedCount++;
+          continue; // ⬅️ IGNORA ESTE CAMPO - ECONOMIZA REQUISIÇÃO
+        }
+        
+        // Validação para números
+        if (input.type === 'number') {
+          if (isNaN(value) || parseFloat(value) < 0) {
+            showNotification(`Valor inválido para ${key}.`, 'error');
+            hasError = true;
+            break;
+          }
+          value = parseFloat(value);
+          
+          // Se após conversão for zero, pula também
+          if (value === 0) {
+            skippedCount++;
+            continue;
+          }
+        }
+        
+        // Validação para datas vazias
+        if (input.type === 'date' && value === '') {
+          skippedCount++;
+          continue;
+        }
+        
+        try {
+          const url = new URL(WEB_APP_URL);
+          const params = new URLSearchParams();
+          params.append("action", "updateUserGoals");
+          params.append("userEmail", currentUserName);
+          params.append("goalKey", key);
+          params.append("goalValue", value);
+          
+          const response = await fetch(url, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: params,
+            redirect: 'follow'
+          });
+          
+          const result = await response.json();
+          if (result.error) {
+            throw new Error(result.error);
+          }
+          
+          savedCount++;
+          
+        } catch (error) {
+          console.error(`Erro ao salvar ${key}:`, error);
+          showNotification(`Erro ao salvar ${key}: ${error.message}`, 'error');
+          hasError = true;
+          break;
+        }
+      }
+
+      setButtonLoading(saveBtn, false);
+
+      if (!hasError) {
+        // Feedback informativo mostrando o ganho de performance
+        const feedbackMsg = savedCount > 0 
+          ? `${savedCount} meta(s) salva(s)` + (skippedCount > 0 ? ` | ${skippedCount} campo(s) ignorado(s)` : '')
+          : 'Nenhum campo preenchido para salvar';
+        
+        saveBtn.innerHTML = '<i class="fas fa-check"></i> Salvo!';
+        saveBtn.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A, #2E7D32)';
+        saveBtn.classList.add('pulse-animation');
+        
+        showNotification(`Metas atualizadas! ${feedbackMsg}`);
+        
+        setTimeout(() => {
+          closeUserGoalsModal();
+          setTimeout(() => {
+            saveBtn.innerHTML = 'Salvar Metas';
+            saveBtn.style.background = '';
+            saveBtn.classList.remove('pulse-animation');
+          }, 500);
+        }, 1500);
+        
+        loadAllData();
+      }
+    }
+
+    function calcularMediasPersonalizadas() {
+      const diasParaProva = globalMetas['Dias_p_Prova']?.value || 0;
+      
+      // PROGRESSO REAL DO USUÁRIO
+      const temasEstudados = allTopics.filter(t => t['Status Estudo'] === 'Concluído').length;
+      const totalTemas = allTopics.length;
+      const temasRestantes = totalTemas - temasEstudados;
+      
+      const revisoesConcluidas = allTopics.filter(t => t['Status Revisão'] === 'Concluído').length;
+      const revisoesRestantes = totalTemas - revisoesConcluidas;
+      
+      const questoesConcluidas = allTopics.filter(t => t['Status Questões'] === 'Concluído').length;
+      const questoesRestantes = totalTemas - questoesConcluidas;
+      
+      // MATERIAIS PESSOAIS
+      const paginasRestantes = (currentUserGoals['Total Material Páginas'] || 0) - (currentUserGoals['Páginas Concluídas'] || 0);
+      const videosRestantes = (currentUserGoals['Total Material Vídeo Aulas'] || 0) - (currentUserGoals['Vídeo Aulas Concluídas'] || 0);
+      const artigosRestantes = (currentUserGoals['Total Material Artigos'] || 0) - (currentUserGoals['Artigos Concluídos'] || 0);
+      const flashcardsRestantes = (currentUserGoals['Total Material Flashcards'] || 0) - (currentUserGoals['Flashcards Concluídos'] || 0);
+
+      // CÁLCULO DAS MÉDIAS PERSONALIZADAS
+      let mediaTemasPersonalizada = diasParaProva > 0 ? (temasRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaRevisoesPersonalizada = diasParaProva > 0 ? (revisoesRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaQuestoesPersonalizada = diasParaProva > 0 ? (questoesRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaPaginasPersonalizada = diasParaProva > 0 ? (paginasRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaVideosPersonalizada = diasParaProva > 0 ? (videosRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaArtigosPersonalizada = diasParaProva > 0 ? (artigosRestantes / diasParaProva).toFixed(1) : 'N/A';
+      let mediaFlashcardsPersonalizada = diasParaProva > 0 ? (flashcardsRestantes / diasParaProva).toFixed(1) : 'N/A';
+
+      return {
+        mediaTemasPersonalizada,
+        mediaRevisoesPersonalizada,
+        mediaQuestoesPersonalizada,
+        mediaPaginasPersonalizada,
+        mediaVideosPersonalizada,
+        mediaArtigosPersonalizada,
+        mediaFlashcardsPersonalizada
+      };
+    }
+
+    function showIndividualProgressOverview() {
+      if (allTopics.length === 0) {
+        showNotification('Nenhum dado carregado para calcular progresso', 'error');
+        return;
+      }
+      const totalTopics = allTopics.length;
+      const topicsEstudados = allTopics.filter(t => t['Status Estudo'] === 'Concluído').length;
+      const topicsRevisados = allTopics.filter(t => t['Status Revisão'] === 'Concluído').length;
+      const topicsQuestoes = allTopics.filter(t => t['Status Questões'] === 'Concluído').length;
+      const faltaEstudar = totalTopics - topicsEstudados;
+      const faltaRevisar = totalTopics - topicsRevisados;
+      const faltaQuestoes = totalTopics - topicsQuestoes;
+      const progressoEstudo = Math.round((topicsEstudados / totalTopics) * 100);
+      const progressoRevisao = Math.round((topicsRevisados / totalTopics) * 100);
+      const progressoQuestoes = Math.round((topicsQuestoes / totalTopics) * 100);
+
+      // Cálculo de materiais
+      const totalPaginas = currentUserGoals['Total Material Páginas'] || 0;
+      const paginasConcluidas = currentUserGoals['Páginas Concluídas'] || 0;
+      const progressoPaginas = totalPaginas > 0 ? Math.round((paginasConcluidas / totalPaginas) * 100) : 0;
+
+      const totalVideos = currentUserGoals['Total Material Vídeo Aulas'] || 0;
+      const videosConcluidos = currentUserGoals['Vídeo Aulas Concluídas'] || 0;
+      const progressoVideos = totalVideos > 0 ? Math.round((videosConcluidos / totalVideos) * 100) : 0;
+
+      const totalArtigos = currentUserGoals['Total Material Artigos'] || 0;
+      const artigosConcluidos = currentUserGoals['Artigos Concluídos'] || 0;
+      const progressoArtigos = totalArtigos > 0 ? Math.round((artigosConcluidos / totalArtigos) * 100) : 0;
+
+      const totalFlashcards = currentUserGoals['Total Material Flashcards'] || 0;
+      const flashcardsConcluidos = currentUserGoals['Flashcards Concluídos'] || 0;
+      const progressoFlashcards = totalFlashcards > 0 ? Math.round((flashcardsConcluidos / totalFlashcards) * 100) : 0;
+
+      const summaryHTML = `
+        <div class="overview-text-summary">
+          <div class="summary-row">
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #1B5E20 5%, #66BB6A 45%, #2E7D32 100%); font-weight: bold;">
+              Estudo: ${progressoEstudo}% (${topicsEstudados}/${totalTopics})
+            </span>
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #990000 5%, #FF6666 45%, #CC0000 100%);">
+              Falta Estudar: ${100 - progressoEstudo}% (${faltaEstudar}/${totalTopics})
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #1B5E20 5%, #66BB6A 45%, #2E7D32 100%); font-weight: bold;">
+              Revisão: ${progressoRevisao}% (${topicsRevisados}/${totalTopics})
+            </span>
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #990000 5%, #FF6666 45%, #CC0000 100%);">
+              Falta revisar: ${100 - progressoRevisao}% (${faltaRevisar}/${totalTopics})
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #1B5E20 5%, #66BB6A 45%, #2E7D32 100%); font-weight: bold;">
+              Questões: ${progressoQuestoes}% (${topicsQuestoes}/${totalTopics})
+            </span>
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #990000 5%, #FF6666 45%, #CC0000 100%);">
+              Falta resolver: ${100 - progressoQuestoes}% (${faltaQuestoes}/${totalTopics})
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #0D47A1 5%, #42A5F5 45%, #1565C0 100%); font-weight: bold;">
+              Páginas: ${progressoPaginas}% (${paginasConcluidas}/${totalPaginas})
+            </span>
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #0D47A1 5%, #42A5F5 45%, #1565C0 100%); font-weight: bold;">
+              Vídeos: ${progressoVideos}% (${videosConcluidos}/${totalVideos})
+            </span>
+          </div>
+          <div class="summary-row">
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #0D47A1 5%, #42A5F5 45%, #1565C0 100%); font-weight: bold;">
+              Artigos: ${progressoArtigos}% (${artigosConcluidos}/${totalArtigos})
+            </span>
+            <span class="overview-box" style="color: #ffffff; background: linear-gradient(135deg, #0D47A1 5%, #42A5F5 45%, #1565C0 100%); font-weight: bold;">
+              Flashcards: ${progressoFlashcards}% (${flashcardsConcluidos}/${totalFlashcards})
+            </span>
+          </div>
+        </div>
+      `;
+      document.getElementById('overview-title').innerHTML = '<i class="fas fa-chart-bar"></i> MINHA VISÃO GERAL DE PROGRESSO';
+      document.getElementById('overview-content').innerHTML = summaryHTML;
+      document.getElementById('overviewModal').style.display = 'flex';
+    }
+
+    // --- NOVA FUNÇÃO PARA BOTÃO DADOS - COM CONTAINERS INDIVIDUAIS (1 COLUNA) ---
+    function showDadosOverview() {
+      if (Object.keys(globalMetas).length === 0) {
+        showNotification('Nenhuma métrica global carregada.', 'error');
+        return;
+      }
+
+      // Dados textuais (removido % Aprovação Ano Ant - CORREÇÃO 3)
+      const dadosTextuais = [
+        { chave: 'Matéria Mais Cobrada', valor: globalMetas['Materia_Mais_Cobradas']?.value || '—' },
+        { chave: 'Tópico Crítico 1', valor: globalMetas['Topico_Crítico_1']?.value || '—' },
+        { chave: 'Tópico Crítico 2', valor: globalMetas['Topico_Crítico_2']?.value || '—' }
+        // % Aprovação Ano Ant foi removido (CORREÇÃO 3)
+      ];
+
+      let dadosContent = `
+        <div class="overview-chart">
+          <div class="chart-title">📊 Dados Textuais do Edital</div>
+          <div class="dados-container">
+      `;
+
+      // Criar container individual para cada métrica (CORREÇÃO 5: 1 coluna)
+      dadosTextuais.forEach(dado => {
+        dadosContent += `
+          <div class="dados-item">
+            <div class="dados-label">${dado.chave}</div>
+            <div class="dados-value">${dado.valor}</div>
+          </div>
+        `;
+      });
+
+      dadosContent += `
+          </div>
+        </div>
+      `;
+
+      document.getElementById('dados-title').innerHTML = '<i class="fas fa-database"></i> DADOS DO EDITAL';
+      document.getElementById('dados-content').innerHTML = dadosContent;
+      document.getElementById('dadosModal').style.display = 'flex';
+    }
+
+    function showRaioXOverview() {
+      if (Object.keys(globalMetas).length === 0) {
+          showNotification('Nenhuma métrica global carregada.', 'error');
+          return;
+      }
+
+      // Dados do Raio X - ATUALIZADO (CORREÇÃO 3: % Aprovação Ano Ant movido para cá)
+      const diasParaProva = globalMetas['Dias_p_Prova']?.value || 0;
+      const totalTemas = globalMetas['Total_Temas_Edital']?.value || 0;
+      const totalRevisoes = globalMetas['Total_Temas_Revisao_Edital']?.value || 0;
+      const totalArtigos = globalMetas['Total_Artigos_Edital']?.value || 0;
+      const totalVideos = globalMetas['Total_Video_Aulas_Edital']?.value || 0;
+      const totalFlashcards = globalMetas['Total_Flashcards_Edital']?.value || 0;
+      const dataProva = formatarData(globalMetas['Data_Prova']?.value);
+      const percentAprovacao = globalMetas['Percent_Aprovacao_Ano_Ant']?.value || '—'; // CORREÇÃO 3: Movido para Raio X
+
+      // MÉDIAS PERSONALIZADAS
+      const mediasPersonalizadas = calcularMediasPersonalizadas();
+
+      // Estrutura do Raio X com GRID DE 4 COLUNAS
+      let raioXContent = `
+          <div class="overview-chart">
+              <div class="chart-title">📊 Métricas do Edital</div>
+              <div class="overview-text-summary">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; align-items: center;">
+      `;
+
+      // Adicionar cada item em pares chave-valor - INCLUINDO % APROVAÇÃO (CORREÇÃO 3)
+      const metricas = [
+          { chave: 'Data Prova', valor: dataProva },
+          { chave: 'Dias p Prova', valor: diasParaProva },
+          { chave: 'Total Temas Edital', valor: totalTemas },
+          { chave: 'Total Temas Revisao Edital', valor: totalRevisoes },
+          { chave: 'Total Artigos Edital', valor: totalArtigos },
+          { chave: 'Total Video Aulas Edital', valor: totalVideos },
+          { chave: 'Total Flashcards Edital', valor: totalFlashcards || '—' },
+          { chave: 'Qtd Vagas Edital', valor: globalMetas['Qtd_Vagas_Edital']?.value || '—' },
+          { chave: 'Qtd Questões', valor: globalMetas['Qtd_Questões']?.value || '—' },
+          { chave: '% Aprovação Ano Ant', valor: percentAprovacao } // CORREÇÃO 3: Adicionado aqui
+      ];
+
+      metricas.forEach(metrica => {
+          raioXContent += `
+              <div style="font-weight: bold; text-align: right; color: #FFD700;" class="${['Data Prova', 'Dias p Prova', 'Total Temas Edital'].includes(metrica.chave) ? 'bigger-font' : ''}">${metrica.chave}:</div>
+              <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${metrica.valor}</div>
+          `;
+      });
+
+      raioXContent += `
+              </div>
+          </div>
+      `;
+
+      // Médias Diárias Recomendadas (Globais) - TAMBÉM EM 4 COLUNAS
+      raioXContent += `
+          <div class="overview-chart raiox-medias">
+              <div class="chart-title">📅 Médias Diárias Recomendadas</div>
+              <div class="overview-text-summary">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; align-items: center;">
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Tópicos:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${diasParaProva > 0 ? (totalTemas / diasParaProva).toFixed(1) : 'N/A'} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Revisões:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${diasParaProva > 0 ? (totalRevisoes / diasParaProva).toFixed(1) : 'N/A'} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Artigos:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${diasParaProva > 0 ? (totalArtigos / diasParaProva).toFixed(1) : 'N/A'} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Vídeos:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${diasParaProva > 0 ? (totalVideos / diasParaProva).toFixed(1) : 'N/A'} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Flashcards:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${diasParaProva > 0 ? (totalFlashcards / diasParaProva).toFixed(1) : 'N/A'} por dia</div>
+                  </div>
+              </div>
+          </div>
+      `;
+
+      // Suas Médias Diárias Personalizadas - TAMBÉM EM 4 COLUNAS
+      raioXContent += `
+          <div class="overview-chart raiox-personalizadas">
+              <div class="chart-title">💪 Suas Médias Diárias Personalizadas</div>
+              <div class="overview-text-summary">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; align-items: center;">
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Tópicos restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaTemasPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Revisões restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaRevisoesPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Questões restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaQuestoesPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Páginas restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaPaginasPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Vídeos restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaVideosPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Artigos restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaArtigosPersonalizada} por dia</div>
+                      <div style="font-weight: bold; text-align: right; color: #FFD700;">Flashcards restantes:</div>
+                      <div style="text-align: left; color: #ffffff; font-size: 1.3em; font-weight: bold;">${mediasPersonalizadas.mediaFlashcardsPersonalizada} por dia</div>
+                  </div>
+              </div>
+          </div>
+          
+          <div class="overview-chart">
+              <div class="chart-title">Dicas para Eficácia e Eficiência</div>
+              <div class="overview-text-summary dicas-content">
+                  <div>🍅 <strong>CICLO POMODORO – FOCO E DISCIPLINA</strong></div>
+                  <div>⏱️ 25 min → 💪 FOCO TOTAL</div>
+                  <div>☕ 5 min → 😌 PAUSA CURTA</div>
+                  <div>🔁 Repita 4 vezes</div>
+                  <div>🌿 Após 4 ciclos → 💤 PAUSA LONGA (15–30 min)</div>
+                  <div>🎯 Objetivo:</div>
+                  <div>👉 Aumentar a concentração</div>
+                  <div>👉 Evitar a procrastinação</div>
+                  <div>👉 Reduzir o cansaço mental</div>
+                  <br>
+                  <div>• Revise o conteúdo no mesmo dia e depois em intervalos crescentes (1, 3, 7, 15 dias).</div>
+                  <div>• Resolva questões imediatamente após estudar o tema.</div>
+                  <div>• Use flashcards para memorizar conceitos-chave e jurisprudência.</div>
+                  <div>• Priorize os temas mais cobrados e os críticos listados acima.</div>
+              </div>
+          </div>
+      `;
+
+      document.getElementById('overview-title').innerHTML = '<i class="fas fa-binoculars"></i> RAIO X DO EDITAL';
+      document.getElementById('overview-content').innerHTML = raioXContent;
+      document.getElementById('overviewModal').style.display = 'flex';
+    }
+
+    // --- VISÃO GERAL ORIGINAL DO V16 (ATUALIZADA) ---
+    function showProgressOverview() {
+      if (allTopics.length === 0) {
+        showNotification('Nenhum dado carregado para calcular progresso', 'error');
+        return;
+      }
+      const totalTopics = allTopics.length;
+      const topicsEstudados = allTopics.filter(t => t['Status Estudo'] === 'Concluído').length;
+      const topicsRevisados = allTopics.filter(t => t['Status Revisão'] === 'Concluído').length;
+      const topicsQuestoes = allTopics.filter(t => t['Status Questões'] === 'Concluído').length;
+      
+      // --- NOVO: DADOS DO EDITAL (TEMPO E CONTEÚDO) ---
+      const dataProva = formatarData(globalMetas['Data_Prova']?.value);
+      
+      // --- NOVAS MÉTRICAS DE DISCIPLINAS - COM VALORES REAIS ---
+      const disciplinasQuestoes = [
+        { 
+          nome: 'Língua Portuguesa', 
+          questoes: globalMetas['Língua_Portuguesa']?.value || '—' 
+        },
+        { 
+          nome: 'Informática Básica', 
+          questoes: globalMetas['Informática_Básica']?.value || '—' 
+        },
+        { 
+          nome: 'Noções de Direito', 
+          // CORREÇÃO 1: Verificar chaves possíveis para Noções de Direito
+          questoes: globalMetas['Noções_de_Direito']?.value || globalMetas['Nocoes_de_Direito']?.value || globalMetas['Noções_Direito']?.value || '—' 
+        },
+        { 
+          nome: 'Direitos Humanos', 
+          questoes: globalMetas['Direitos_Humanos']?.value || '—' 
+        },
+        { 
+          nome: 'Legislação Especial', 
+          questoes: globalMetas['Legislação_Especial']?.value || '—' 
+        },
+        { 
+          nome: 'Raciocínio Lógico', 
+          questoes: globalMetas['Raciocínio_Lógico']?.value || '—' 
+        }
+      ];
+
+      const dadosEditalHTML = `
+        <div class="overview-chart">
+          <div class="chart-title">📊 Dados do Edital</div>
+          <div class="overview-text-summary">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center;">
+              <div style="font-weight: bold; text-align: right; color: #FFD700;" class="bigger-font">Data Prova:</div>
+              <div style="text-align: left; color: #ffffff;" class="bigger-font">${dataProva}</div>
+              <div style="font-weight: bold; text-align: right; color: #FFD700;" class="bigger-font">Dias p/ Prova:</div>
+              <div style="text-align: left; color: #ffffff;" class="bigger-font">${globalMetas['Dias_p_Prova']?.value || 'N/A'} dias</div>
+              <div style="font-weight: bold; text-align: right; color: #FFD700;" class="bigger-font">Temas:</div>
+              <div style="text-align: left; color: #ffffff;" class="bigger-font">${globalMetas['Total_Temas_Edital']?.value || 'N/A'}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // --- NOVO BLOCO: DISTRIBUIÇÃO DE QUESTÕES POR DISCIPLINA ---
+      const disciplinasHTML = `
+        <div class="overview-chart">
+          <div class="chart-title">📚 Distribuição de Questões por Disciplina</div>
+          <div class="overview-text-summary distribuicao-questoes">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: center;">
+      `;
+      
+      let disciplinasContent = '';
+      disciplinasQuestoes.forEach(disciplina => {
+        disciplinasContent += `
+          <div style="font-weight: bold; text-align: right; color: #FFD700;">${disciplina.nome}:</div>
+          <div style="text-align: left; color: #ffffff; font-weight: bold;">${disciplina.questoes} questões</div>
+        `;
+      });
+      
+      const disciplinasFinalHTML = disciplinasHTML + disciplinasContent + `
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // --- GRÁFICO 1 ---
+      const chart1 = `
+        <div class="chart-title">Gráfico 1: Estudo Geral</div>
+        <div class="chart-1-container">
+          <div class="bar estudado" style="height: ${(topicsEstudados / totalTopics) * 100}%">
+            <div class="bar-label">Estudado<br>${topicsEstudados}</div>
+          </div>
+          <div class="bar nao-estudado" style="height: ${((totalTopics - topicsEstudados) / totalTopics) * 100}%">
+            <div class="bar-label">Não estudado<br>${totalTopics - topicsEstudados}</div>
+          </div>
+        </div>
+      `;
+      
+      // --- GRÁFICO 2: Por disciplina ---
+      const disciplines = [...new Set(allTopics.map(t => t.Disciplinas).filter(d => d))];
+      let disciplineBars = '';
+      disciplines.forEach(disc => {
+        const discTopics = allTopics.filter(t => t.Disciplinas === disc);
+        const total = discTopics.length;
+        const concluidos = discTopics.filter(t => t['Status Estudo'] === 'Concluído').length;
+        const percent = total > 0 ? Math.round((concluidos / total) * 100) : 0;
+        disciplineBars += `
+          <div class="discipline-progress">
+            <div class="discipline-name" onclick="filterByDiscipline('${disc}')">
+              <span>${disc}</span>
+              <span>${concluidos}/${total} (${percent}%)</span>
+            </div>
+            <div class="progress-bar-container">
+              <div class="progress-bar-fill" style="width: ${percent}%">${percent}%</div>
+            </div>
+          </div>
+        `;
+      });
+      
+      // --- GRÁFICO 3: Revisão Geral (AGORA COM BARRAS DE PROGRESSO) ---
+      const chart3 = `
+        <div class="chart-title">Gráfico 3: Revisão Geral</div>
+        <div class="discipline-progress">
+          <div class="discipline-name">
+            <span>Revisão Concluída</span>
+            <span>${topicsRevisados}/${totalTopics} (${Math.round((topicsRevisados / totalTopics) * 100)}%)</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: ${Math.round((topicsRevisados / totalTopics) * 100)}%">${Math.round((topicsRevisados / totalTopics) * 100)}%</div>
+          </div>
+        </div>
+      `;
+      
+      // --- MONTAR TUDO ---
+      const fullContent = `
+        ${dadosEditalHTML}
+        ${disciplinasFinalHTML}
+        <div class="overview-chart">${chart1}</div>
+        <div class="overview-chart">
+          <div class="chart-title">Gráfico 2: Progresso por Disciplina (Estudo)</div>
+          ${disciplineBars}
+        </div>
+        <div class="overview-chart">${chart3}</div>
+      `;
+      
+      document.getElementById('overview-title').innerHTML = '<i class="fas fa-chart-bar"></i> VISÃO GERAL DO PROGRESSO';
+      document.getElementById('overview-content').innerHTML = fullContent;
+      document.getElementById('overviewModal').style.display = 'flex';
+    }
+
+    function filterByDiscipline(disciplineName) {
+      document.getElementById('disciplineFilter').value = disciplineName;
+      filterTopics();
+      document.getElementById('overviewModal').style.display = 'none';
+      showSection("topics-list-container");
+      updateTopicCounter();
+    }
+
+    // --- FUNÇÕES DE SALVAMENTO DE TÓPICOS ---
+    async function saveProgress() {
+      const saveButton = document.getElementById('save-progress-btn');
+      
+      // Feedback visual imediato
+      saveButton.innerHTML = '<i class="fas fa-spinner button-spinner"></i> Salvando...';
+      saveButton.style.background = 'linear-gradient(135deg, #2196F3, #42A5F5, #1565C0)';
+      
+      if (!currentUserName) {
+        showNotification('Usuário não autenticado.', 'error');
+        saveButton.innerHTML = '<i class="fas fa-save"></i> Salvar Progresso';
+        saveButton.style.background = '';
+        return;
+      }
+      if (isEditMode) {
+        await saveTopicChanges();
+        saveButton.innerHTML = '<i class="fas fa-save"></i> Salvar Progresso';
+        saveButton.style.background = '';
+        return;
+      }
+      const sequence = currentTopicSequence;
+      if (!sequence) {
+        showNotification('Nenhum tópico selecionado.', 'error');
+        saveButton.innerHTML = '<i class="fas fa-save"></i> Salvar Progresso';
+        saveButton.style.background = '';
+        return;
+      }
+      const statusEstudo = document.getElementById('estudo-checkbox').checked ? 'Concluído' : 'Não Concluído';
+      const dataEstudo = document.getElementById('estudo-date').value;
+      const statusRevisao = document.getElementById('revisao-checkbox').checked ? 'Concluído' : 'Não Concluído';
+      const dataRevisao = document.getElementById('revisao-date').value;
+      const statusQuestoes = document.getElementById('questoes-checkbox').checked ? 'Concluído' : 'Não Concluído';
+      const dataQuestoes = document.getElementById('questoes-date').value;
+      try {
+        const url = new URL(WEB_APP_URL);
+        const params = new URLSearchParams();
+        params.append("action", "update");
+        params.append("userEmail", currentUserName);
+        params.append("sequence", sequence);
+        params.append("statusEstudo", statusEstudo);
+        params.append("dataEstudo", dataEstudo);
+        params.append("statusRevisao", statusRevisao);
+        params.append("dataRevisao", dataRevisao);
+        params.append("statusQuestoes", statusQuestoes);
+        params.append("dataQuestoes", dataQuestoes);
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params,
+          redirect: 'follow'
+        });
+        const result = await response.json();
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+        // Restaurar botão com feedback positivo
+        saveButton.innerHTML = '<i class="fas fa-check"></i> Salvo!';
+        saveButton.style.background = 'linear-gradient(135deg, #4CAF50, #66BB6A, #2E7D32)';
+        saveButton.classList.add('pulse-animation');
+        
+        showNotification('Progresso salvo com sucesso!');
+        await loadAllData();
+        
+        // Restaurar após 2 segundos
+        setTimeout(() => {
+          saveButton.innerHTML = '<i class="fas fa-save"></i> Salvar Progresso';
+          saveButton.style.background = '';
+          saveButton.classList.remove('pulse-animation');
+        }, 2000);
+      } catch (error) {
+        console.error("Erro ao salvar progresso:", error);
+        showNotification(`Erro ao salvar: ${error.message}`, 'error');
+        saveButton.innerHTML = '<i class="fas fa-save"></i> Salvar Progresso';
+        saveButton.style.background = '';
+      }
+    }
+
+    function toggleEditMode() {
+      if (!isEditMode) {
+        showConfirm('Ao editar o tópico, você estará modificando informações que foram pré-definidas. Tem certeza que deseja continuar?', (confirmed) => {
+          if (confirmed) {
+            activateEditMode();
+          }
+        });
+      } else {
+        deactivateEditMode();
+      }
+    }
+
+    function activateEditMode() {
+      isEditMode = true;
+      originalTopicData = {
+        disc: document.getElementById('info-disc').textContent,
+        seq: document.getElementById('info-seq').textContent,
+        topico: document.getElementById('info-topico').textContent,
+        subtopico: document.getElementById('info-subtopico').textContent
+      };
+      document.getElementById('edit-mode-banner').style.display = 'block';
+      document.querySelectorAll('.info-value').forEach(el => el.style.display = 'none');
+      document.querySelectorAll('.edit-input').forEach(el => {
+        el.style.display = 'block';
+        const field = el.id.replace('edit-', '');
+        el.value = originalTopicData[field];
+      });
+      document.getElementById('edit-topic-btn').innerHTML = '<i class="fas fa-times"></i> Cancelar Edição';
+      document.getElementById('edit-topic-btn').classList.remove('btn-edit');
+      document.getElementById('edit-topic-btn').classList.add('btn-cancel');
+      showNotification('Modo de edição ativado. Você pode modificar as informações do tópico.', 'success');
+    }
+
+    function deactivateEditMode() {
+      isEditMode = false;
+      document.getElementById('edit-mode-banner').style.display = 'none';
+      document.querySelectorAll('.info-value').forEach(el => el.style.display = 'block');
+      document.querySelectorAll('.edit-input').forEach(el => el.style.display = 'none');
+      if (originalTopicData.disc) {
+        document.getElementById('info-disc').textContent = originalTopicData.disc;
+        document.getElementById('info-seq').textContent = originalTopicData.seq;
+        document.getElementById('info-topico').textContent = originalTopicData.topico;
+        document.getElementById('info-subtopico').textContent = originalTopicData.subtopico;
+      }
+      document.getElementById('edit-topic-btn').innerHTML = '<i class="fas fa-edit"></i> Editar Tópico';
+      document.getElementById('edit-topic-btn').classList.remove('btn-cancel');
+      document.getElementById('edit-topic-btn').classList.add('btn-edit');
+      showNotification('Modo de edição desativado.', 'success');
+    }
+
+    async function saveTopicChanges() {
+      if (!currentUserName) {
+        showNotification('Usuário não autenticado.', 'error');
+        return;
+      }
+      const sequence = currentTopicSequence;
+      if (!sequence) {
+        showNotification('Nenhum tópico selecionado.', 'error');
+        return;
+      }
+      const disc = document.getElementById('edit-disc').value;
+      const seq = document.getElementById('edit-seq').value;
+      const topico = document.getElementById('edit-topico').value;
+      const subtopico = document.getElementById('edit-subtopico').value;
+      if (!disc || !seq || !topico) {
+        showNotification('Disciplina, Sequência e Tópico são obrigatórios.', 'error');
+        return;
+      }
+      try {
+        const url = new URL(WEB_APP_URL);
+        const params = new URLSearchParams();
+        params.append("action", "update_topic");
+        params.append("userEmail", currentUserName);
+        params.append("sequence", sequence);
+        params.append("disc", disc);
+        params.append("topico", topico);
+        params.append("subtopico", subtopico);
+        const response = await fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: params,
+          redirect: 'follow'
+        });
+        const result = await response.json();
+        if (result.error) {
+          throw new Error(result.error);
+        }
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+        document.getElementById('info-disc').textContent = disc;
+        document.getElementById('info-seq').textContent = seq;
+        document.getElementById('info-topico').textContent = topico;
+        document.getElementById('info-subtopico').textContent = subtopico;
+        document.getElementById('topic-detail-title').innerHTML = `<i class="fas fa-book"></i> ${disc} - ${seq}`;
+        if (subtopico && subtopico !== '—') {
+          document.getElementById('topic-detail-title').innerHTML += `<br><i class="fas fa-level-down-alt"></i> ${subtopico}`;
+        }
+        document.getElementById('topic-detail-discipline').textContent = topico;
+        showNotification('Tópico atualizado com sucesso!');
+        deactivateEditMode();
+        await loadAllData();
+      } catch (error) {
+        console.error("Erro ao salvar tópico:", error);
+        showNotification(`Erro ao salvar: ${error.message}`, 'error');
+      }
+    }
+
+    function resetProgress() {
+      const resetButton = document.getElementById('reset-progress-btn');
+      const sequence = currentTopicSequence;
+      if (!sequence) return;
+      showConfirm('Tem certeza que deseja limpar todo o progresso deste tópico?', async (confirmed) => {
+        if (confirmed) {
+          setButtonLoading(resetButton, true);
+          try {
+            const url = new URL(WEB_APP_URL);
+            const params = new URLSearchParams();
+            params.append("action", "reset");
+            params.append("userEmail", currentUserName);
+            params.append("sequence", sequence);
+            const response = await fetch(url, {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded" },
+              body: params,
+              redirect: 'follow'
+            });
+            const result = await response.json();
+            if (result.error) {
+              throw new Error(result.error);
+            }
+            if (!result.success) {
+              throw new Error(result.message);
+            }
+            showNotification('Progresso resetado com sucesso!');
+            await loadAllData();
+          } catch (error) {
+            console.error("Erro ao resetar progresso:", error);
+            showNotification(`Erro ao resetar: ${error.message}`, 'error');
+          } finally {
+            setButtonLoading(resetButton, false);
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
