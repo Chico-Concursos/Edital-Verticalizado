@@ -1841,6 +1841,42 @@ header h1 {
     background: #F44336; /* Vermelho */
     border-color: #F44336;
 }
+/* --- ESTILO PARA O NOVO BOTÃO DE FECHAR --- */
+.btn-fechar-novo {
+  /* Forma e Tamanho */
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  
+  /* Cor e Fundo */
+  background: linear-gradient(135deg, #7A0000 5%, #FF4D4D 45%, #A10000 100%);
+  color: white;
+  border: 1px solid #FFC9C9;
+  
+  /* Conteúdo ("X") */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1;
+
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  
+  /* Efeitos */
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  flex-shrink: 0; /* Impede que o botão seja esmagado */
+}
+
+.btn-fechar-novo:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+/* --- FIM DO ESTILO --- */
   </style>
 </head>
 <body>
@@ -1933,9 +1969,7 @@ header h1 {
                 <ul id="topics-list"></ul>
               </div>
               <div id="topic-detail-container" style="display:none;">
-                <div class="resize-handle" title="Fechar e voltar à lista" onclick="closeTopicDetails()">
-  <i class="fas fa-times"></i>
-</div>
+    <button class="btn-fechar-novo" title="Fechar e voltar à lista" onclick="closeTopicDetails()" style="position: absolute; top: 8px; right: 8px; z-index: 10;">X</button>
                 <!-- Banner de Modo Edição -->
                 <div class="edit-mode-banner" id="edit-mode-banner">
                   <i class="fas fa-edit"></i> MODO EDIÇÃO ATIVADO - Você está editando informações do tópico
@@ -2079,9 +2113,7 @@ header h1 {
   <!-- MODAL DE VISÃO GERAL -->
   <div class="modal-backdrop" id="overviewModal">
     <div class="modal" style="width: 92%; max-width: 900px; max-height: 92vh; overflow: hidden; text-align: center; position: relative;">
-      <button class="btn-modal-cancel" onclick="closeOverviewModal()" style="position: absolute; top: 10px; right: 8px; padding: 2px 4px; font-size: 0.75rem; z-index: 10;">
-        <i class="fas fa-times"></i> Fechar
-      </button>
+    <button class="btn-fechar-novo" onclick="closeOverviewModal()" style="position: absolute; top: 10px; right: 10px; z-index: 10;">X</button>
       <h3 id="overview-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-chart-bar"></i> VISÃO GERAL</h3>
       <div id="overview-content" class="overview-modal-content" style="padding-top: 0;"></div>
     </div>
@@ -2090,20 +2122,16 @@ header h1 {
   <!-- NOVO MODAL: DADOS -->
   <div class="modal-backdrop" id="dadosModal">
     <div class="modal" style="width: 92%; max-width: 900px; max-height: 92vh; overflow: hidden; text-align: center; position: relative;">
-      <button class="btn-modal-cancel" onclick="closeDadosModal()" style="position: absolute; top: 10px; right: 8px; padding: 2px 4px; font-size: 0.75rem; z-index: 10;">
-        <i class="fas fa-times"></i> Fechar
-      </button>
-      <h3 id="dados-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-database"></i> DADOS DO EDITAL</h3>
+  <button class="btn-fechar-novo" onclick="closeDadosModal()" style="position: absolute; top: 10px; right: 10px; z-index: 10;">X</button>
+  <h3 id="dados-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-database"></i> DADOS DO EDITAL</h3>
       <div id="dados-content" class="overview-modal-content" style="padding-top: 0;"></div>
     </div>
   </div>
   <!-- MODAL DE ESTATÍSTICAS DAS METAS -->
   <div class="modal-backdrop" id="estatisticasModal">
     <div class="modal" style="width: 92%; max-width: 900px; max-height: 92vh; overflow: hidden; text-align: center; position: relative;">
-      <button class="btn-modal-cancel" onclick="closeEstatisticasModal()" style="position: absolute; top: 10px; right: 8px; padding: 2px 4px; font-size: 0.75rem; z-index: 10;">
-        <i class="fas fa-times"></i> Fechar
-      </button>
-      <h3 id="estatisticas-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-chart-line"></i> ESTATÍSTICAS DAS METAS</h3>
+  <button class="btn-fechar-novo" onclick="closeEstatisticasModal()" style="position: absolute; top: 10px; right: 10px; z-index: 10;">X</button>
+  <h3 id="estatisticas-title" style="margin-top: 0px; margin-bottom: 10px;"><i class="fas fa-chart-line"></i> ESTATÍSTICAS DAS METAS</h3>
       <div id="estatisticas-content" class="overview-modal-content" style="padding-top: 0;"></div>
     </div>
   </div>
@@ -2158,9 +2186,8 @@ header h1 {
             <!-- >>>>> FIM DO NOVO TIMER DE FOCO <<<<< -->
 
             <!-- Botão Fechar -->
-            <button class="btn-modal-cancel" onclick="closeAgendaModal()" style="padding: 4px 8px; font-size: 0.8rem;">
-                <i class="fas fa-times"></i> Fechar
-            </button>
+            <!-- Botão Fechar -->
+<button class="btn-fechar-novo" onclick="closeAgendaModal()" title="Fechar">X</button>
         </div>
       </div>
 <!-- ================================================================ -->
@@ -2262,7 +2289,7 @@ header h1 {
 
   <script>
     // --- CONFIGURAÇÃO ---
-    let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxuWcTaObfhuJaexuLW_20IHsO4r1veUSWQhQNDq9NGxEbK_oiozSd-Oz40YAfreQ/exec";
+    let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygSW2z33jnRiVq8S_PAcucOSXkKHsLSZ6DKXYSfP4O9XdziYuHo7yGBF4iCNUv5No6sA/exec";
 
     // --- VARIÁVEIS GLOBAIS ---
     let allTopics = [];
@@ -4226,10 +4253,10 @@ function showProgressOverview() {
 
   // --- 📚 DISTRIBUIÇÃO DE QUESTÕES POR DISCIPLINA ---
   const disciplinasQuestoes = [
-    { nome: 'Língua Portuguesa', questoes: globalMetas['Língua_Portuguesa']?.value || '—' },
-    { nome: 'Doutrina Oper.', questoes: globalMetas['Doutrina_Oper.']?.value || '—' },
-    { nome: 'Leg. Institucional', questoes: globalMetas['Leg._Institucional']?.value || '—' },
-    { nome: 'Leg._Jurídica', questoes: globalMetas['Leg._Jurídica']?.value || '—' },
+    { nome: 'L. Portuguesa', questoes: globalMetas['L._Portuguesa']?.value || '—' },
+    { nome: 'Informática Básica', questoes: globalMetas['Informática_Básica']?.value || '—' },
+    { nome: 'Noções de Direito', questoes: globalMetas['Noções_de_Direito']?.value || '—' },
+    { nome: 'Direitos Humanos', questoes: globalMetas['Direitos_Humanos']?.value || '—' },
   ];
   let disciplinasContent = '';
   disciplinasQuestoes.forEach(disciplina => {
@@ -5134,9 +5161,9 @@ async function saveRevisaoPopup(sequence) {
     <!-- 2º Grupo: Seletores de Período -->
     <div style="display: flex; align-items: center; gap: 10px;">
         <strong style="color: #F7EF8A;">Mostrar períodos:</strong>
-        <label style="color: #fff100; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-manha" checked> Manhã</label>
-        <label style="color: #fff100; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-tarde" checked> Tarde</label>
-        <label style="color: #fff100; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-noite" checked> Noite</label>
+        <label style="color: #fff; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-manha" checked> Manhã</label>
+        <label style="color: #fff; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-tarde" checked> Tarde</label>
+        <label style="color: #fff; display:flex; align-items:center; gap: 4px;"><input type="checkbox" id="periodo-noite" checked> Noite</label>
     </div>
 
     <!-- 3º Grupo: Data da Semana -->
