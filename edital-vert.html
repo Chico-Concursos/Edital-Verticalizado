@@ -6,6 +6,21 @@
   <title>Controle de Progresso - Edital Polícia Penal</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
+  /* --- ESTILO PARA O NOVO TÍTULO --- */
+header {
+  text-align: center;
+  padding: 20px 0;
+  color: #F7EF8A;
+}
+header h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+  background: linear-gradient(to right, #D2AC47, #F7EF8A, #AE8625);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* --- FIM DO ESTILO --- */
     * {
       margin: 0;
       padding: 0;
@@ -59,19 +74,15 @@
       min-height: 420px;
       border: 1px solid #333;
     }
-    .app-header {
+   .app-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end; /* ALTERADO DE 'space-between' */
       align-items: center;
       margin-bottom: 12px;
       padding-bottom: 0px;
       border-bottom: 1px solid #333;
       flex-wrap: wrap;
       gap: 8px;
-    }
-    .app-header h2 {
-      color: #F7EF8A;
-      font-size: 1.5rem;
     }
     .user-info {
       display: flex;
@@ -226,7 +237,7 @@
     #main-container {
       display: flex;
       flex-direction: column;
-      height: 420px;
+      height: 650px;
       gap: 12px;
     }
     .content-area {
@@ -1834,6 +1845,9 @@
 <body>
   <div class="container">
     <div class="app-container">
+	<header>
+      <h1>EDITAL VERTICALIZADO PPMG-2025</h1>
+    </header>
       <div class="progress-app">
         <!-- CONTAINER DE LOGIN -->
         <div id="login-container" style="display: flex;">
@@ -1855,7 +1869,6 @@
         <!-- CONTEÚDO PRINCIPAL (APÓS LOGIN) -->
         <div id="app-content" style="display: none;">
           <div class="app-header">
-            <h2><i class="fas fa-tasks"></i> Controle de Progresso - Edital</h2>
             <div class="user-info">
               <i class="fas fa-user-circle"></i>
               <span id="user-name-display">Usuário</span>
@@ -2558,7 +2571,7 @@ const topicContent = `
     <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
       
       <!-- INÍCIO DO NOVO BLOCO DE RÓTULOS -->
-      <div style="display: flex; gap: 6px; font-size: 0.7rem; color: #aaa; font-weight: bold; padding-right: 12px;">
+      <div style="display: flex; gap: 6px; font-size: 0.7rem; color: #FFF; font-weight: bold; padding-right: 12px;">
         <span style="width: 22px; text-align: center;" title="Estudo">E</span>
         <span style="min-width: 28px; text-align: center;" title="Revisões">R</span>
         <span style="width: 22px; text-align: center;" title="Questões">Q</span>
