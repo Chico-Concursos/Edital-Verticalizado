@@ -35,6 +35,7 @@ header h1 {
       display: flex;
       justify-content: center;
       align-items: flex-start;
+	  overflow-y: hidden;
     }
     .container {
       width: 100%;
@@ -2261,7 +2262,7 @@ header h1 {
 
   <script>
     // --- CONFIGURAÇÃO ---
-    let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbygSW2z33jnRiVq8S_PAcucOSXkKHsLSZ6DKXYSfP4O9XdziYuHo7yGBF4iCNUv5No6sA/exec";
+    let WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyxuWcTaObfhuJaexuLW_20IHsO4r1veUSWQhQNDq9NGxEbK_oiozSd-Oz40YAfreQ/exec";
 
     // --- VARIÁVEIS GLOBAIS ---
     let allTopics = [];
@@ -4225,10 +4226,10 @@ function showProgressOverview() {
 
   // --- 📚 DISTRIBUIÇÃO DE QUESTÕES POR DISCIPLINA ---
   const disciplinasQuestoes = [
-    { nome: 'L. Portuguesa', questoes: globalMetas['L._Portuguesa']?.value || '—' },
-    { nome: 'Informática Básica', questoes: globalMetas['Informática_Básica']?.value || '—' },
-    { nome: 'Noções de Direito', questoes: globalMetas['Noções_de_Direito']?.value || '—' },
-    { nome: 'Direitos Humanos', questoes: globalMetas['Direitos_Humanos']?.value || '—' },
+    { nome: 'Língua Portuguesa', questoes: globalMetas['Língua_Portuguesa']?.value || '—' },
+    { nome: 'Doutrina Oper.', questoes: globalMetas['Doutrina_Oper.']?.value || '—' },
+    { nome: 'Leg. Institucional', questoes: globalMetas['Leg._Institucional']?.value || '—' },
+    { nome: 'Leg._Jurídica', questoes: globalMetas['Leg._Jurídica']?.value || '—' },
   ];
   let disciplinasContent = '';
   disciplinasQuestoes.forEach(disciplina => {
